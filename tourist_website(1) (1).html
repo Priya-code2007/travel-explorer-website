@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Explorer | Discover Incredible India</title>
+  <style>
+    :root { --green:#087f5b; --deep:#073b32; --cream:#f7f8f3; --ink:#18312b; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:var(--cream); line-height:1.6; }
+    a { text-decoration:none; color:inherit; }
+    .nav { display:flex; align-items:center; justify-content:space-between; padding:18px 7%; background:#fff; position:sticky; top:0; z-index:10; box-shadow:0 2px 15px #1231; }
+    .brand { font-weight:800; font-size:1.35rem; color:var(--green); letter-spacing:.2px; }
+    .nav-links { display:flex; gap:24px; align-items:center; font-size:.95rem; }
+    .nav-links a:hover { color:var(--green); }
+    .nav-cta,.btn { background:var(--green); color:white; padding:11px 18px; border-radius:999px; font-weight:700; border:0; cursor:pointer; display:inline-block; }
+    .nav-cta:hover,.btn:hover { background:var(--deep); }
+    .hero { min-height:560px; display:flex; align-items:center; padding:70px 7%; color:white; background:linear-gradient(90deg,rgba(3,30,27,.82),rgba(3,30,27,.22)),url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=2000&q=85') center/cover; }
+    .hero-content { max-width:680px; }
+    .eyebrow { text-transform:uppercase; letter-spacing:3px; font-size:.78rem; font-weight:800; color:#c6f6df; margin-bottom:15px; }
+    h1 { font-size:clamp(2.6rem,6vw,4.7rem); line-height:1.08; margin-bottom:20px; }
+    .hero p { font-size:1.1rem; max-width:560px; color:#f1f5f2; margin-bottom:28px; }
+    .searchbar { display:flex; gap:10px; background:white; border-radius:14px; padding:8px; max-width:550px; box-shadow:0 8px 28px #0003; }
+    .searchbar input { flex:1; min-width:0; border:0; outline:0; padding:12px; font-size:1rem; color:#18312b; }
+    section { padding:70px 7%; }
+    .section-top { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:28px; }
+    .section-top h2 { font-size:clamp(1.8rem,4vw,2.6rem); line-height:1.2; }
+    .section-top p { color:#62736d; max-width:470px; margin-top:8px; }
+    .filters { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:25px; }
+    .filter { border:1px solid #d6e1dc; background:white; border-radius:999px; padding:8px 14px; cursor:pointer; color:var(--ink); }
+    .filter.active,.filter:hover { background:var(--deep); color:white; border-color:var(--deep); }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
+    .card { background:white; border-radius:18px; overflow:hidden; box-shadow:0 5px 24px #18312b0d; transition:transform .2s,box-shadow .2s; }
+    .card:hover { transform:translateY(-5px); box-shadow:0 12px 30px #18312b18; }
+    .card img { width:100%; height:220px; object-fit:cover; display:block; }
+    .card-body { padding:19px; }
+    .location { font-size:.82rem; color:var(--green); font-weight:800; text-transform:uppercase; letter-spacing:.6px; }
+    .card h3 { font-size:1.25rem; margin:5px 0 8px; }
+    .card p { color:#62736d; font-size:.94rem; }
+    .card-foot { display:flex; align-items:center; justify-content:space-between; margin-top:17px; padding-top:13px; border-top:1px solid #edf0ed; }
+    .tag { font-size:.8rem; color:#52635d; background:#edf7f1; border-radius:8px; padding:5px 9px; }
+    .details { color:var(--green); font-weight:800; cursor:pointer; background:none; border:0; font-size:.9rem; }
+    .no-results { display:none; padding:25px; text-align:center; color:#62736d; background:white; border-radius:12px; grid-column:1/-1; }
+    .feature { background:#e9f3ed; display:grid; grid-template-columns:1fr 1fr; gap:45px; align-items:center; }
+    .feature img { width:100%; height:350px; object-fit:cover; border-radius:20px; }
+    .feature h2 { font-size:clamp(2rem,4vw,3rem); line-height:1.15; margin-bottom:16px; }
+    .feature p { color:#536a61; margin-bottom:22px; }
+    .stats { display:flex; gap:28px; flex-wrap:wrap; margin-top:25px; }
+    .stat strong { display:block; font-size:1.5rem; color:var(--green); }
+    .stat span { color:#62736d; font-size:.88rem; }
+    .newsletter { text-align:center; background:var(--deep); color:white; }
+    .newsletter p { color:#c8ddd4; margin:10px auto 22px; max-width:550px; }
+    .newsletter form { display:flex; gap:8px; max-width:460px; margin:auto; background:white; padding:7px; border-radius:999px; }
+    .newsletter input { border:0; outline:0; padding:10px 14px; flex:1; min-width:0; border-radius:999px; }
+    .newsletter .btn { white-space:nowrap; }
+    footer { padding:26px 7%; background:#052d27; color:#d1e4dc; display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; font-size:.9rem; }
+    .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#073b32; color:white; padding:12px 18px; border-radius:10px; box-shadow:0 6px 24px #0003; display:none; z-index:30; max-width:90%; }
+    @media(max-width:900px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .feature { grid-template-columns:1fr; } .feature img { height:300px; } }
+    @media(max-width:620px) { .nav { padding:15px 5%; } .nav-links { gap:12px; } .nav-links a:not(.nav-cta) { display:none; } .hero { padding:55px 5%; min-height:520px; } section { padding:52px 5%; } .grid { grid-template-columns:1fr; } .section-top { display:block; } .searchbar { flex-direction:column; border-radius:14px; } .searchbar .btn { width:100%; } .newsletter form { border-radius:14px; flex-direction:column; } .newsletter input { min-height:45px; } .newsletter .btn { border-radius:999px; } }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#home">✦ Travel Explorer</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#home">Home</a><a href="#destinations">Destinations</a><a href="#about">About</a>
+      <a class="nav-cta" href="#destinations">Explore places ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <div class="eyebrow">Find your next adventure</div>
+        <h1>Discover the beauty of India.</h1>
+        <p>From peaceful mountains to colourful cities, find inspiring places and plan a trip you’ll always remember.</p>
+        <div class="searchbar">
+          <input id="heroSearch" type="search" placeholder="Search places, e.g. Goa or Jaipur" aria-label="Search destinations" />
+          <button class="btn" id="searchBtn">Find destinations</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="destinations">
+      <div class="section-top">
+        <div><div class="eyebrow" style="color:var(--green)">Handpicked for you</div><h2>Popular destinations</h2><p>Explore a few of India's most loved places, each with its own story.</p></div>
+      </div>
+      <div class="filters" aria-label="Filter destinations">
+        <button class="filter active" data-filter="All">All places</button>
+        <button class="filter" data-filter="Nature">Nature</button>
+        <button class="filter" data-filter="Culture">Culture</button>
+        <button class="filter" data-filter="Beach">Beaches</button>
+        <button class="filter" data-filter="Adventure">Adventure</button>
+      </div>
+      <div class="grid" id="destinationGrid">
+        <article class="card" data-category="Culture" data-search="agra uttar pradesh taj mahal history monument">
+          <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80" alt="Taj Mahal in Agra" loading="lazy">
+          <div class="card-body"><div class="location">Agra, Uttar Pradesh</div><h3>Taj Mahal</h3><p>Admire the marble masterpiece and the timeless love story behind it.</p><div class="card-foot"><span class="tag">Culture & history</span><button class="details" data-place="Taj Mahal, Agra">Explore ↗</button></div></div>
+        </article>
+        <article class="card" data-category="Nature" data-search="manali himachal pradesh mountains snow nature hill station">
+          <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=900&q=80" alt="Himalayan mountains near Manali" loading="lazy">
+          <div class="card-body"><div class="location">Himachal Pradesh</div><h3>Manali</h3><p>Breathe in mountain air, discover scenic valleys, and enjoy cosy cafés.</p><div class="card-foot"><span class="tag">Nature</span><button class="details" data-place="Manali, Himachal Pradesh">Explore ↗</button></div></div>
+        </article>
+        <article class="card" data-category="Beach" data-search="goa beaches coastline sunsets sea relaxation">
+          <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80" alt="Goa beach and Arabian Sea" loading="lazy">
+          <div class="card-body"><div class="location">Goa</div><h3>Goa</h3><p>Enjoy golden beaches, colourful markets, coastal food, and sunset views.</p><div class="card-foot"><span class="tag">Beach escape</span><button class="details" data-place="Goa, India">Explore ↗</button></div></div>
+        </article>
+        <article class="card" data-category="Culture" data-search="jaipur rajasthan pink city forts palaces culture">
+          <img src="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=900&q=80" alt="Hawa Mahal in Jaipur" loading="lazy">
+          <div class="card-body"><div class="location">Rajasthan</div><h3>Jaipur</h3><p>Wander through royal forts, pink-hued streets, crafts, and local bazaars.</p><div class="card-foot"><span class="tag">Culture & history</span><button class="details" data-place="Jaipur, Rajasthan">Explore ↗</button></div></div>
+        </article>
+        <article class="card" data-category="Nature" data-search="munnar kerala tea gardens hills greenery nature">
+          <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80" alt="Green hills and tea plantations in Kerala" loading="lazy">
+          <div class="card-body"><div class="location">Kerala</div><h3>Munnar</h3><p>Walk among rolling tea gardens and misty green hills in the Western Ghats.</p><div class="card-foot"><span class="tag">Nature</span><button class="details" data-place="Munnar, Kerala">Explore ↗</button></div></div>
+        </article>
+        <article class="card" data-category="Adventure" data-search="leh ladakh mountains lake adventure road trip">
+          <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=900&q=80" alt="Mountain landscape in Ladakh" loading="lazy">
+          <div class="card-body"><div class="location">Ladakh</div><h3>Leh-Ladakh</h3><p>See dramatic mountain landscapes, high-altitude lakes, and starry skies.</p><div class="card-foot"><span class="tag">Adventure</span><button class="details" data-place="Leh, Ladakh, India">Explore ↗</button></div></div>
+        </article>
+        <div class="no-results" id="noResults">No destinations found. Try a different search.</div>
+      </div>
+    </section>
+
+    <section class="feature" id="about">
+      <div>
+        <div class="eyebrow" style="color:var(--green)">Travel with curiosity</div>
+        <h2>Every journey starts with a little inspiration.</h2>
+        <p>Travel Explorer helps you discover places worth visiting. Use the destination filters to find your kind of trip, then explore reliable travel resources to plan the details.</p>
+        <a class="btn" href="#destinations">Find your destination</a>
+        <div class="stats"><div class="stat"><strong>6</strong><span>Featured places</span></div><div class="stat"><strong>4</strong><span>Travel styles</span></div><div class="stat"><strong>1</strong><span>Incredible India</span></div></div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=1200&q=85" alt="Scenic Indian travel landscape" loading="lazy">
+    </section>
+
+    <section class="newsletter">
+      <h2>Get a little travel inspiration</h2>
+      <p>Join the demo mailing list for destination ideas. This form is a front-end example and does not send or store your email.</p>
+      <form id="newsletterForm"><input type="email" id="email" placeholder="Your email address" aria-label="Your email address" required><button class="btn" type="submit">Sign me up</button></form>
+    </section>
+  </main>
+
+  <footer><span>© <span id="year"></span> Travel Explorer</span><span>Made for curious travellers ✦</span><a href="#home">Back to top ↑</a></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const searchInput = document.getElementById('heroSearch');
+    const cards = [...document.querySelectorAll('.card')];
+    const filterButtons = [...document.querySelectorAll('.filter')];
+    const noResults = document.getElementById('noResults');
+    let activeFilter = 'All';
+
+    function applyFilters() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visible = 0;
+      cards.forEach(card => {
+        const matchesText = (card.dataset.search + ' ' + card.innerText).toLowerCase().includes(query);
+        const matchesCategory = activeFilter === 'All' || card.dataset.category === activeFilter;
+        const show = matchesText && matchesCategory;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      noResults.style.display = visible ? 'none' : 'block';
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      applyFilters();
+      document.getElementById('destinations').scrollIntoView({ behavior: 'smooth' });
+    });
+    searchInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter') {
+        applyFilters();
+        document.getElementById('destinations').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    filterButtons.forEach(button => button.addEventListener('click', () => {
+      filterButtons.forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      activeFilter = button.dataset.filter;
+      applyFilters();
+    }));
+
+    const toast = document.getElementById('toast');
+    function showToast(message) {
+      toast.textContent = message;
+      toast.style.display = 'block';
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.style.display = 'none', 3200);
+    }
+    document.querySelectorAll('.details').forEach(button => button.addEventListener('click', () => {
+      const place = button.dataset.place;
+      showToast('Opening travel search for ' + place + '…');
+      window.open('https://www.google.com/search?q=' + encodeURIComponent(place + ' travel guide'), '_blank', 'noopener,noreferrer');
+    }));
+    document.getElementById('newsletterForm').addEventListener('submit', event => {
+      event.preventDefault();
+      showToast('Thanks! This demo form does not save your email yet.');
+      event.target.reset();
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
